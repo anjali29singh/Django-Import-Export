@@ -1,7 +1,6 @@
 from import_export import resources, fields
 from .models import CustomerModel
 
-
 class CustomerResource(resources.ModelResource):
 
     index = fields.Field(attribute='index',column_name='Index')
@@ -16,6 +15,8 @@ class CustomerResource(resources.ModelResource):
     email = fields.Field(attribute='email', column_name='Email')
     subscription_date = fields.Field(attribute='subscription_date', column_name='Subscription Date')
     website = fields.Field(attribute='website', column_name='Website')
+
+    # Sir code
 
     class Meta:
         model = CustomerModel
