@@ -1,11 +1,11 @@
 
 from django.urls import path ,include
-from .views import uploadCsv,ImportDataView,ExportDataView
+from .views import ImportDataView,ProcessImportView
 
 urlpatterns = [
      
-    path('upload/',uploadCsv,name='uploadCsv'),
+    # path('upload/',uploadCsv,name='uploadCsv'),
     path('import/',ImportDataView.as_view(),name='importData'),
-    path('export/',ExportDataView.as_view(),name='exportData'),
+    path('process_import/',ProcessImportView.as_view(),name='process_import'),
 
 ]
