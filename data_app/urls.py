@@ -2,6 +2,7 @@
 from django.urls import path ,include
 from .views import ImportDataView,ProcessImportView
 
+app_label="data_app"
 urlpatterns = [
      
     # path('upload/',uploadCsv,name='uploadCsv'),

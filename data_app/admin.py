@@ -15,4 +15,9 @@ admin.site.register(CustomerModel,CustomerAdmin)
 
 class customAdmin(ImportExportModelAdmin):
     resource_class= CustomerAdminResources
-    
+
+
+
+#  admin site =customeAdmin
+
+

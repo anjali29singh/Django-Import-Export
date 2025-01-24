@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from rest_framework.response import Response
 import pandas as pd
 from rest_framework.permissions import IsAuthenticated 
@@ -9,14 +9,20 @@ from .resources import CustomerResource
 from tablib import Dataset
 from rest_framework.parsers import MultiPartParser
 import io
-
+from django.views import View
 from import_export.admin import ImportMixin
-from import_export.forms import ImportForm
+from django.urls import path, reverse, reverse_lazy
+from django.forms import forms
+from import_export.signals import post_import
 
 class MyCustomMixin(ImportMixin):
 
     resource_class = CustomerResource
-    
+    model = CustomerModel
+    media = forms.Media()
+
+
+
 
 
 class ImportDataView(APIView):
@@ -24,18 +30,22 @@ class ImportDataView(APIView):
     parser_classes = [MultiPartParser]
     
 
+
     def get(self,request):
+
+
+        mixin = MyCustomMixin()
+        mixin.import_action(request)
         
-        # return httml response
-
-        mixin = MyCustomMixin().import_action(request)
-
-
         return Response("get request called")
 
 
-
     def post(self, request):
+        mixin = MyCustomMixin().import_action(request)
+
+        # print(mixin)
+
+        return render(request, mixin)
         file = request.FILES['file']
         if not file:
             return Response({'error': 'Please upload a CSV file'}, status=400)
@@ -43,6 +53,9 @@ class ImportDataView(APIView):
         if not file.name.endswith('.csv'):
             return Response({'error': 'File must be CSV format'}, status=400)
             
+
+
+
 
         # dataset = Dataset()
         # text_file = io.TextIOWrapper(file,encoding='utf-8')
@@ -91,3 +104,17 @@ class ImportDataView(APIView):
 class ProcessImportView(APIView):
 
     pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
