@@ -115,4 +115,14 @@ CSRF_TRUSTED_ORIGINS=[
     'http://localhost',
 ]
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
+
+REST_FRAMEWORK = {
+
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
+    )
+
+}
