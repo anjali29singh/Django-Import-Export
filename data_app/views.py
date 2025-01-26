@@ -1,21 +1,15 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from rest_framework.response import Response
-import pandas as pd
 from rest_framework.permissions import IsAuthenticated 
 from .models import CustomerModel
 from rest_framework.views import APIView
 from .resources import CustomerResource
-from tablib import Dataset
 from rest_framework.parsers import MultiPartParser
 import io
 from django.views import View
 from import_export.admin import ImportMixin
-from django.urls import path, reverse, reverse_lazy
 from django.forms import forms
-from import_export.signals import post_import
-from bs4 import BeautifulSoup
-
 
 
 class MyCustomMixin(ImportMixin):
@@ -36,9 +30,6 @@ class MyCustomMixin(ImportMixin):
             return HttpResponseBadRequest("import action not implemented")
 
         return self.process_import(request)
-
-
-
 
 
 class ImportDataView(APIView,MyCustomMixin):
