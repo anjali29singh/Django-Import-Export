@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated 
 from .models import CustomerModel
@@ -9,8 +9,8 @@ from rest_framework.parsers import MultiPartParser
 import io
 from django.views import View
 from import_export.admin import ImportMixin
+from django.contrib.admin.views.main import ChangeList
 from django.forms import forms
-
 
 class MyCustomMixin(ImportMixin):
 
@@ -30,7 +30,8 @@ class MyCustomMixin(ImportMixin):
             return HttpResponseBadRequest("import action not implemented")
 
         return self.process_import(request)
-
+    
+    
 
 class ImportDataView(APIView,MyCustomMixin):
     permission_classes = [IsAuthenticated]
@@ -49,8 +50,7 @@ class ImportDataView(APIView,MyCustomMixin):
     def post(self, request):
 
         response = self.handle_import_actions(request)
-        
-        return Response("post request called")
+        return JsonResponse({"response":response})
     
 class ProcessImportView(APIView,MyCustomMixin):
     permission_classes = [IsAuthenticated]
@@ -60,9 +60,6 @@ class ProcessImportView(APIView,MyCustomMixin):
         response =  self.handle_process_import(request)
 
         return Response("process import view called")
-
-
-
 
 
 
