@@ -5,6 +5,7 @@ from .resources import CustomerAdminResources
 
 
 
+
 class CustomerAdmin(ImportExportModelAdmin):
     resource_class= CustomerAdminResources
 admin.site.register(CustomerModel,CustomerAdmin)
@@ -13,8 +14,8 @@ admin.site.register(CustomerModel,CustomerAdmin)
 #     list_display=('index','customer_id','first_name','last_name','company','city','country','phone_no1','phone_no2','email','subscription_date','website')
 
 
-# class customAdmin(ImportExportModelAdmin):
-#     resource_class= CustomerAdminResources
+class MyCustomerAdmin(ImportExportModelAdmin):
+    resource_class= CustomerAdminResources
     
     # def get_list_display(self, request):
     #     default_list_display = ['index','customer_id','first_name','last_name','company','city','country','phone_no1','phone_no2','email','subscription_date','website'] 

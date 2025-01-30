@@ -4,32 +4,31 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated 
 from .models import CustomerModel
 from rest_framework.views import APIView
-from .resources import CustomerResource
+from .resources import CustomerResource,CustomerAdminResources
 from rest_framework.parsers import MultiPartParser
 import io
 from django.views import View
 from import_export.admin import ImportMixin
 from django.contrib.admin.views.main import ChangeList
 from django.forms import forms
+from .admin import MyCustomerAdmin
 
 class MyCustomMixin(ImportMixin):
 
-    resource_class = CustomerResource
-    model = CustomerModel
     media = forms.Media()
-
-    
+    admin = MyCustomerAdmin(CustomerModel,CustomerAdminResources)
     def handle_import_actions(self,request):
         if not hasattr(self,"import_action"):
             return HttpResponseBadRequest("No import action defined")
 
-        return self.import_action(request)
+        return self.admin.import_action(request)
+
 
     def handle_process_import(self,request):
         if not hasattr(self,"process_import"):
             return HttpResponseBadRequest("import action not implemented")
-
-        return self.process_import(request)
+        
+        return self.admin.process_import(request)
     
     
 
@@ -40,8 +39,6 @@ class ImportDataView(APIView,MyCustomMixin):
 
     def get(self,request):
     
-
-
         response= self.handle_import_actions(request)
         
         return Response("get request called")
@@ -50,7 +47,9 @@ class ImportDataView(APIView,MyCustomMixin):
     def post(self, request):
 
         response = self.handle_import_actions(request)
-        return JsonResponse({"response":response})
+
+        
+        return HttpResponse(response)
     
 class ProcessImportView(APIView,MyCustomMixin):
     permission_classes = [IsAuthenticated]
